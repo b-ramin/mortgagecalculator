@@ -24,14 +24,14 @@ class Amortization
         $this->buildSchedule();
     }
 
-    public function calculateTermPayment() : void
+    public function calculateTermPayment()
     {
         $discountFactor = $this->discountFactor($this->periodInterestRate, $this->periods);
 
         $this->payment = $this->principal / $discountFactor;
     }
 
-    public function buildSchedule() : void
+    public function buildSchedule()
     {
         for ($i = 1; $i <= $this->periods; $i++) {
             $principal = $principal ?? $this->principal;

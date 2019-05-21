@@ -3,7 +3,7 @@
     "description": "Calculate various loan details from data provided via URLA form",
     "type": "library",
     "require": {
-        "php": "^7.1"
+        "php": "^7.0.3"
     },
     "authors": [
         {

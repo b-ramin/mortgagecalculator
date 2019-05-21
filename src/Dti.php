@@ -10,7 +10,7 @@ class Dti extends Calculator
 
     private $dti;
 
-    public function calculate(): string
+    public function calculate()
     {
         $this->calculateDebt();
         $this->calculateIncome();
