@@ -1,0 +1,15 @@
+{
+    "name": "bretramin/mortgage-calculator",
+    "description": "Calculate various loan details from data provided via URLA form",
+    "type": "library",
+    "require": {
+        "php": "^7.1"
+    },
+    "authors": [
+        {
+            "name": "Bret Ramin",
+            "email": "bramin@guildmortgage.net"
+        }
+    ],
+    "minimum-stability": "dev"
+}
