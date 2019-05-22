@@ -3,10 +3,11 @@
 namespace MortgageCalculator;
 
 const PERIODS_PER_YEAR = 12;
-const CURRENCY_PRECISION = 2;
 
 class Amortization
 {
+    const CURRENCY_PRECISION = 2;
+
     private $principal;
 
     private $periods;
@@ -88,6 +89,6 @@ class Amortization
 
     private static function roundToCents($value)
     {
-        return number_format(round($value, CURRENCY_PRECISION), CURRENCY_PRECISION, '.', '');
+        return number_format(round($value, self::CURRENCY_PRECISION), self::CURRENCY_PRECISION, '.', '');
     }
 }

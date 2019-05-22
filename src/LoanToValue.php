@@ -2,10 +2,10 @@
 
 namespace MortgageCalculator;
 
-const PERCENT_PRECISION = 3;
-
 class LoanToValue
 {
+    const PERCENT_PRECISION = 3;
+
     protected $originalLoanAmount;
     protected $estimatedValue;
     protected $purchasePrice;
@@ -47,6 +47,6 @@ class LoanToValue
 
     protected static function convertToPercent($value)
     {
-        return number_format(round($value * 100, PERCENT_PRECISION), PERCENT_PRECISION);
+        return number_format(round($value * 100, self::PERCENT_PRECISION), self::PERCENT_PRECISION);
     }
 }

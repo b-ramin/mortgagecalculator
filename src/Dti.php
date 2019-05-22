@@ -2,10 +2,10 @@
 
 namespace MortgageCalculator;
 
-const PERCENT_PRECISION = 3;
-
 class Dti
 {
+    const PERCENT_PRECISION = 3;
+
     private $debt;
 
     private $income;
@@ -34,6 +34,6 @@ class Dti
 
     protected static function convertToPercent($value)
     {
-        return number_format(round($value * 100, PERCENT_PRECISION), PERCENT_PRECISION) . '%';
+        return number_format(round($value * 100, self::PERCENT_PRECISION), self::PERCENT_PRECISION) . '%';
     }
 }
