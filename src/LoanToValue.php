@@ -2,20 +2,51 @@
 
 namespace MortgageCalculator;
 
+const PERCENT_PRECISION = 3;
+
 class LoanToValue
 {
-    public $ltv;
+    protected $originalLoanAmount;
+    protected $estimatedValue;
+    protected $purchasePrice;
+    protected $totalLoanAmount;
+    protected $subFinanceAmount;
 
-    public $cltv;
-
-    public function __construct(float $estimatedValue, float $totalLoanAmount, float $subFinanceAmount)
+    public function __construct(
+        float $originalLoanAmount,
+        float $estimatedValue,
+        float $purchasePrice = null,
+        float $totalLoanAmount = null,
+        float $subFinanceAmount = null
+    )
     {
-        $this->ltv  = self::convertToPercent($totalLoanAmount / $estimatedValue);
-        $this->cltv = self::convertToPercent(($totalLoanAmount + $subFinanceAmount) / $estimatedValue);
+        $this->originalLoanAmount = $originalLoanAmount;
+        $this->estimatedValue     = $estimatedValue;
+        $this->purchasePrice      = $purchasePrice;
+        $this->totalLoanAmount    = $totalLoanAmount;
+        $this->subFinanceAmount   = $subFinanceAmount;
     }
 
-    private static function convertToPercent($value)
+    public function calculate()
     {
-        return round($value * 100, 3);
+        $loanAmount = $this->getLoanAmount();
+        $value      = $this->getValue();
+
+        return self::convertToPercent($loanAmount / $value);
+    }
+
+    protected function getLoanAmount()
+    {
+        return $this->originalLoanAmount;
+    }
+
+    protected function getValue()
+    {
+        return $this->estimatedValue;
+    }
+
+    protected static function convertToPercent($value)
+    {
+        return number_format(round($value * 100, PERCENT_PRECISION), PERCENT_PRECISION);
     }
 }

@@ -3,6 +3,7 @@
 namespace MortgageCalculator;
 
 const PERIODS_PER_YEAR = 12;
+const CURRENCY_PRECISION = 2;
 
 class Amortization
 {
@@ -20,7 +21,12 @@ class Amortization
 
     public $schedule;
 
-    public function __construct(float $principal, int $periods, float $interestRate, $interestOnly = false)
+    public function __construct(
+        float $principal,
+        int $periods,
+        float $interestRate,
+        $interestOnly = false
+    )
     {
         $this->principal          = $principal;
         $this->periods            = $periods;
@@ -40,8 +46,8 @@ class Amortization
         } else {
             $r = $this->periodInterestRate;
 
-            $num = ($this->principal * $r);
-            $den = 1 - pow((1 + $r), -1 * abs($this->periods));
+            $num = $this->principal * $r;
+            $den = 1 - pow(1 + $r, -1 * abs($this->periods));
 
             $this->payment = self::roundToCents($num / $den);
         }
@@ -82,6 +88,6 @@ class Amortization
 
     private static function roundToCents($value)
     {
-        return round($value, 2);
+        return number_format(round($value, CURRENCY_PRECISION), CURRENCY_PRECISION, '.', '');
     }
 }

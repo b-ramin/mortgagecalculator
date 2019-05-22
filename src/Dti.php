@@ -2,7 +2,9 @@
 
 namespace MortgageCalculator;
 
-class Dti extends Calculator
+const PERCENT_PRECISION = 3;
+
+class Dti
 {
     private $debt;
 
@@ -17,12 +19,7 @@ class Dti extends Calculator
 
         $this->dti = $this->debt / $this->income;
 
-        return $this->formatPercent($this->dti);
-    }
-
-    private function formatPercent(float $number)
-    {
-        return round($number * 100, 3) . '%';
+        return self::convertToPercent($this->dti);
     }
 
     private function calculateDebt()
@@ -33,5 +30,10 @@ class Dti extends Calculator
     private function calculateIncome()
     {
         $this->income = 5;
+    }
+
+    protected static function convertToPercent($value)
+    {
+        return number_format(round($value * 100, PERCENT_PRECISION), PERCENT_PRECISION) . '%';
     }
 }
