@@ -8,20 +8,19 @@ class CombinedLoanToValue extends LoanToValue
     {
         if (empty($this->subFinanceAmount)) {
             return parent::getLoanAmount();
-        } else {
-            return $this->totalLoanAmount + $this->subFinanceAmount;
         }
+
+        return $this->totalLoanAmount + $this->subFinanceAmount;
     }
 
     protected function getValue()
     {
         if (empty($this->subFinanceAmount)) {
-            $value = parent::getValue();
-        } else {
-            $value = self::firstNonEmpty([$this->purchasePrice, $this->estimatedValue, $this->originalLoanAmount]);
+            return parent::getValue();
         }
 
-        return $value;
+        return self::firstNonEmpty([$this->purchasePrice, $this->estimatedValue, $this->originalLoanAmount]);
+
     }
 
     private static function firstNonEmpty($array)
