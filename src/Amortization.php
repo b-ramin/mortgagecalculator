@@ -2,21 +2,21 @@
 
 namespace MortgageCalculator;
 
-const PERIODS_PER_YEAR = 12;
-
 class Amortization
 {
+    const PERIODS_PER_YEAR = 12;
+
     const CURRENCY_PRECISION = 2;
 
-    private $principal;
+    protected $principal;
 
-    private $periods;
+    protected $periods;
 
-    private $interestRate;
+    protected $interestRate;
 
-    private $interestOnly;
+    protected $interestOnly;
 
-    private $periodInterestRate;
+    protected $periodInterestRate;
 
     public $payment;
 
@@ -25,33 +25,26 @@ class Amortization
     public function __construct(
         float $principal,
         int $periods,
-        float $interestRate,
-        $interestOnly = false
+        float $interestRate
     )
     {
         $this->principal          = $principal;
         $this->periods            = $periods;
         $this->interestRate       = $interestRate;
-        $this->interestOnly       = $interestOnly;
-        $this->periodInterestRate = $interestRate / 100 / PERIODS_PER_YEAR;
+        $this->periodInterestRate = $interestRate / 100 / self::PERIODS_PER_YEAR;
 
-        $this->calculatePayment($interestOnly);
+        $this->calculatePayment();
         $this->buildSchedule();
     }
 
     private function calculatePayment()
     {
-        if ($this->interestOnly) {
-            $interestPerYear = $this->principal * $this->interestRate;
-            $this->payment = self::roundToCents($interestPerYear / PERIODS_PER_YEAR);
-        } else {
-            $r = $this->periodInterestRate;
+        $r = $this->periodInterestRate;
 
-            $num = $this->principal * $r;
-            $den = 1 - pow(1 + $r, -1 * abs($this->periods));
+        $num = $this->principal * $r;
+        $den = 1 - pow(1 + $r, -1 * abs($this->periods));
 
-            $this->payment = self::roundToCents($num / $den);
-        }
+        $this->payment = self::roundToCents($num / $den);
     }
 
     private function buildSchedule()
@@ -87,7 +80,7 @@ class Amortization
         return $this->getTotalPrincipal() + $this->getTotalInterest();
     }
 
-    private static function roundToCents($value)
+    protected static function roundToCents($value)
     {
         return number_format(round($value, self::CURRENCY_PRECISION), self::CURRENCY_PRECISION, '.', '');
     }
