@@ -32,9 +32,6 @@ class Amortization
         $this->periods            = $periods;
         $this->interestRate       = $interestRate;
         $this->periodInterestRate = $interestRate / 100 / self::PERIODS_PER_YEAR;
-
-        $this->calculatePayment();
-        $this->buildSchedule();
     }
 
     private function calculatePayment()
@@ -53,7 +50,7 @@ class Amortization
             $principal = $principal ?? $this->principal;
 
             $interest  = $principal * $this->periodInterestRate;
-            $principalPayment = $this->payment - $interest;
+            $principalPayment = $this->getPayment() - $interest;
 
             $this->schedule[] = [
                 'term'              => $i,
@@ -65,14 +62,34 @@ class Amortization
         }
     }
 
+    public function getPayment()
+    {
+        if (empty($this->payment))
+        {
+            $this->calculatePayment();
+        }
+
+        return $this->payment;
+    }
+
+    public function getSchedule()
+    {
+        if (empty($this->schedule))
+        {
+            $this->buildSchedule();
+        }
+
+        return $this->schedule;
+    }
+
     public function getTotalPrincipal()
     {
-        return array_sum(array_column($this->schedule, 'principal_payment'));
+        return array_sum(array_column($this->getSchedule(), 'principal_payment'));
     }
 
     public function getTotalInterest()
     {
-        return array_sum(array_column($this->schedule, 'interest_payment'));
+        return array_sum(array_column($this->getSchedule(), 'interest_payment'));
     }
 
     public function totalLoanCost()
