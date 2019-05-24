@@ -18,8 +18,6 @@ class Amortization
 
     protected $periodInterestRate;
 
-    public $payment;
-
     public $schedule;
 
     public function __construct(
@@ -41,7 +39,7 @@ class Amortization
         $num = $this->principal * $r;
         $den = 1 - pow(1 + $r, -1 * abs($this->periods));
 
-        $this->payment = self::roundToCents($num / $den);
+        return self::roundToCents($num / $den);
     }
 
     private function buildSchedule()
@@ -64,12 +62,7 @@ class Amortization
 
     public function getPayment()
     {
-        if (empty($this->payment))
-        {
-            $this->calculatePayment();
-        }
-
-        return $this->payment;
+        return $this->calculatePayment();
     }
 
     public function getSchedule()

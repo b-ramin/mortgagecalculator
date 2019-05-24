@@ -8,6 +8,6 @@ class InterestOnlyAmortization extends Amortization
     {
         $interestPerYear = $this->principal * $this->interestRate;
 
-        $this->payment = self::roundToCents($interestPerYear / self::PERIODS_PER_YEAR);
+        return self::roundToCents($interestPerYear / self::PERIODS_PER_YEAR);
     }
 }
