@@ -18,18 +18,16 @@ class Dti
     private $dtiBack;
 
     protected $incomeItems = [
-        'base_income'          => 'baseInRatio',
-        'overtimeInRatio'      => 'overtime',
-        'bonusesInRatio'       => 'bonuses',
-        'commissionsInRatio'   => 'commissions',
-        'dividendsInRatio'     => 'dividends_interest',
-        'interestInRatio'      => 'interest',
-//        '' => 'rental_income',
-//        '' => 'rent_from_reo',
-        'childSupportInRatio'  => 'childSupport',
-        'alimonyInRatio'       => 'alimony',
-        'ssiDisabilityInRatio' => 'ssiDisability',
-        'retirementInRatio'    => 'retirement',
+        'base_income'        => 'baseInRatio',
+        'overtime'           => 'overtimeInRatio',
+        'bonuses'            => 'bonusesInRatio',
+        'commissions'        => 'commissionsInRatio',
+        'dividends_interest' => 'dividendsInRatio',
+        'interest'           => 'interestInRatio',
+        'childSupport'       => 'childSupportInRatio',
+        'alimony'            => 'alimonyInRatio',
+        'ssiDisability'      => 'ssiDisabilityInRatio',
+        'retirement'         => 'retirementInRatio',
     ];
 
     protected $liabilityItems = [
@@ -135,8 +133,14 @@ class Dti
 
         foreach ($borrowers as $borrower) {
             foreach ($borrower['liabilities_details'] as $liabilitiesDetail) {
-                if ($liabilitiesDetail['in_ratio'] === '1') {
+                if ($liabilitiesDetail['in_ratio'] === '1' && $liabilitiesDetail['liability_type'] != 99) {
                     $totalLiabilities += $liabilitiesDetail['monthly_payment'];
+                }
+            }
+
+            foreach ($borrower['reo_data'] as $liabilitiesDetail) {
+                if ($liabilitiesDetail['useInRatio'] === 'YES' && $liabilitiesDetail['isSubjectProperty'] === 'NO') {
+                    $totalLiabilities += abs($liabilitiesDetail['monthlyNetRentalIncome']);
                 }
             }
         }
