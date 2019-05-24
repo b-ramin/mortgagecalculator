@@ -32,6 +32,17 @@ class Dti
         'retirementInRatio'    => 'retirement',
     ];
 
+    protected $liabilityItems = [
+        'first_mortgage',
+        'other_financing',
+        'hazard_insurance',
+        'real_estate_taxes',
+        'mortgage_insurance',
+        'hoa',
+        'other_expenses',
+        'utilities',
+    ];
+
     public function __construct($appData)
     {
         $this->appData     = $appData;
@@ -45,7 +56,7 @@ class Dti
             $mortgageLiability = $this->getMortgageLiability();
             $totalIncome       = $this->getTotalIncome();
 
-            $this->dtiFront    = $mortgageLiability / $totalIncome;
+            $this->dtiFront = $mortgageLiability / $totalIncome;
         }
 
         return self::convertToPercent($this->dtiFront);
@@ -58,7 +69,7 @@ class Dti
             $otherLiability    = $this->getOtherLiability();
             $totalIncome       = $this->getTotalIncome();
 
-            $this->dtiBack     = ($mortgageLiability + $otherLiability) / $totalIncome;
+            $this->dtiBack = ($mortgageLiability + $otherLiability) / $totalIncome;
         }
 
         return self::convertToPercent($this->dtiBack);
@@ -67,18 +78,9 @@ class Dti
     protected function getMortgageLiability()
     {
         if (!isset($this->mortgageLiability)) {
-            $proposed = $this->borrowers['1']['hse_exp_details']['1']['proposed'];
-
-            $this->mortgageLiability = array_sum([
-                $proposed['first_mortgage'],
-                $proposed['other_financing'],
-                $proposed['hazard_insurance'],
-                $proposed['real_estate_taxes'],
-                $proposed['mortgage_insurance'],
-                $proposed['hoa'],
-                $proposed['other_expenses'],
-                $proposed['utilities'],
-            ]);
+            foreach ($this->liabilityItems as $item) {
+                $this->mortgageLiability += $this->borrowers['1']['hse_exp_details']['1']['proposed'][$item];
+            }
         }
 
         return $this->mortgageLiability;
