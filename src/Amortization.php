@@ -56,18 +56,28 @@ class Amortization
     }
 
     /**
-     * Calculate and return monthly payment as a dollar string.
+     * Calculate monthly payment.
      *
      * @return string
      */
-    public function getPayment()
+    protected function calculatePayment()
     {
         $r = $this->periodInterestRate;
 
         $num = $this->principal * $r;
         $den = 1 - pow(1 + $r, -1 * abs($this->periods));
 
-        return self::roundToCents($num / $den);
+        return $num / $den;
+    }
+
+    /**
+     * Return monthly payment formatted as a string.
+     *
+     * @return string
+     */
+    public function getPayment()
+    {
+        return self::roundToCents($this->calculatePayment());
     }
 
     /**
