@@ -142,7 +142,7 @@ class Amortization
      * Round off dollar values to two decimal places (cents) and add dollar sign to create money string.
      *
      * @param float $value
-     * @return float
+     * @return string
      */
     protected static function roundToCents($value)
     {
